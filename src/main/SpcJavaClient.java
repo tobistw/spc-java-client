@@ -19,11 +19,11 @@ public class SpcJavaClient {
     }
 
 
-    public String[] requestMetaData(String accessToken) {
+    public String requestMetaData(String accessToken) {
         spcConnector = new MockSpcConnectorImpl();
         spcConnector.setAuthParameter(spcClientSecret, accessToken);
 
-        return spcConnector.requestEndpoint(spcUrl);
+        return spcConnector.requestEndpointToJson(spcUrl);
     }
 
     /*

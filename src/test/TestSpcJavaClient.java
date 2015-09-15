@@ -1,5 +1,6 @@
 import static org.junit.Assert.*;
 
+import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -13,12 +14,9 @@ public class TestSpcJavaClient {
     private static final String API_KEY = "59559afbdae9e1075e68fa263057653b";
     private static final String SPC_URL = "http://127.0.0.1:9000/info/api/001";
     private static final String MOCK_ACCESS_TOKEN = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJfaWQiOiI1NWNkYWI2ZjVhMjNiMWIwMTJkZTU1ZGEiLCJpYXQiOjE0NDExOTcxNTMzMTgsImV4cCI6MTQ0MTIxNTE1MzMxOH0.Gi1eu5OGMyojwMdONMEi7HZrmC90Wq_Q4SIx7MiUz18";
-    private static final String[] MOCK_SPC_RESPONSE = {
-            "_id", "55cdab6f5a23b1b012de55da", "name", "Testuser",
-            "address", "Musterstr. 16", "company", "BMW", "factory", "München Werk 1",
-            "key", "color", "value", "green", "key", "accesslevel", "value", "1",
-            "key", "email", "value", "testuser@ascora.de"
-    };
+
+    private MockSpcResponse mockSpcResponse;
+    private Gson gson;
 
 
     @Before
@@ -29,6 +27,8 @@ public class TestSpcJavaClient {
         spcClient.setSpcUrl(SPC_URL);
 
         spcClient.setCurrentAccessToken(MOCK_ACCESS_TOKEN);
+        mockSpcResponse = new MockSpcResponse();
+        gson = new Gson();
     }
 
     @Test
@@ -47,7 +47,7 @@ public class TestSpcJavaClient {
 
     @Test
     public void testRequestMetaData() {
-        String[] result = spcClient.requestMetaData(spcClient.getCurrentAccessToken());
-        assertEquals(result, MOCK_SPC_RESPONSE);
+        String result = spcClient.requestMetaData(spcClient.getCurrentAccessToken());
+        assertEquals(result, gson.toJson(mockSpcResponse));
     }
 }
