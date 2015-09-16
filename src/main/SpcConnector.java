@@ -7,8 +7,7 @@ import java.io.IOException;
  */
 public interface SpcConnector {
 
-    public void setAuthParameter(String apiKey, String accessToken);
-
-    public String requestEndpointToJson() throws IOException;
+    //todo: return type must be List<EntityDocument>
+    public String requestEndpointDocuments(String apiKey, String accessToken) throws IOException;
 
 }

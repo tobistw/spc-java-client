@@ -9,22 +9,27 @@ public class SpcJavaClient {
     private String spcClientSecret;
     private String spcUrl;
 
-    private SpcConnector spcConnector;
+    private SpcConnector connector;
 
     public SpcJavaClient(){}
 
-    public SpcJavaClient(String spcClientId, String spcClientSecret, String spcUrl) {
-        this.spcClientId = spcClientId;
-        this.spcClientSecret = spcClientSecret;
+    public SpcJavaClient(String clientName, String apiKey, String spcUrl) {
+        this.spcClientId = clientName;
+        this.spcClientSecret = apiKey;
         this.spcUrl = spcUrl;
     }
 
 
-    public String requestMetaData(String accessToken, SpcConnector connector) throws IOException {
-        spcConnector = connector;
-        spcConnector.setAuthParameter(spcClientSecret, accessToken);
+    public String requestMetaData(String accessToken) throws IOException {
+        connector = new MockSpcConnectorImpl(spcUrl);
 
-        return spcConnector.requestEndpointToJson();
+        return connector.requestEndpointDocuments(spcClientSecret, accessToken);
+    }
+
+    public String requestMetaData(String accessToken, SpcConnector connector) throws IOException {
+        this.connector = connector;
+
+        return this.connector.requestEndpointDocuments(spcClientSecret, accessToken);
     }
 
     /*

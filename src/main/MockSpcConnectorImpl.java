@@ -17,14 +17,10 @@ public class MockSpcConnectorImpl implements SpcConnector {
         mockSpcResponse = new MockSpcResponse();
     }
 
+
     @Override
-    public void setAuthParameter(String apiKey, String accessToken) {
+    public String requestEndpointDocuments(String apiKey, String accessToken) {
         this.uri += "?api_key=" + apiKey + "&access_token=" + accessToken;
-    }
-
-
-    @Override
-    public String requestEndpointToJson() {
         Gson gson = new Gson();
 
         if (executeRequest(uri)) {
