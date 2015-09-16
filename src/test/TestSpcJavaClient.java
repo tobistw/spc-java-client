@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.io.IOException;
+
 /**
  * Created by tobi on 15.09.2015.
  */
@@ -26,7 +28,6 @@ public class TestSpcJavaClient {
         spcClient.setSpcClientSecret(API_KEY);
         spcClient.setSpcUrl(SPC_URL);
 
-        spcClient.setCurrentAccessToken(MOCK_ACCESS_TOKEN);
         mockSpcResponse = new MockSpcResponse();
         gson = new Gson();
     }
@@ -39,15 +40,19 @@ public class TestSpcJavaClient {
         assertEquals(spcClient.getSpcUrl(), SPC_URL);
     }
 
-    @Test
-    public void testUseAccessToken() {
-
-        assertEquals(spcClient.getCurrentAccessToken(), MOCK_ACCESS_TOKEN);
-    }
 
     @Test
-    public void testRequestMetaData() {
-        String result = spcClient.requestMetaData(spcClient.getCurrentAccessToken());
+    public void testMockRequestMetaData() throws IOException {
+        SpcConnector connector = new MockSpcConnectorImpl(SPC_URL);
+        String result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN, connector);
         assertEquals(result, gson.toJson(mockSpcResponse));
     }
+
+    @Test
+    public void testRestRequestMetaData() throws IOException {
+        SpcConnector connector = new SpcRestConnector(SPC_URL);
+        String result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN, connector);
+        assertEquals(result, gson.toJson(mockSpcResponse));
+    }
+
 }

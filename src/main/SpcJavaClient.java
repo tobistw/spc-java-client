@@ -1,3 +1,5 @@
+import java.io.IOException;
+
 /**
  * Created by tobi on 15.09.2015.
  */
@@ -6,7 +8,6 @@ public class SpcJavaClient {
     private String spcClientId;
     private String spcClientSecret;
     private String spcUrl;
-    private String currentAccessToken;
 
     private SpcConnector spcConnector;
 
@@ -19,11 +20,11 @@ public class SpcJavaClient {
     }
 
 
-    public String requestMetaData(String accessToken) {
-        spcConnector = new MockSpcConnectorImpl();
+    public String requestMetaData(String accessToken, SpcConnector connector) throws IOException {
+        spcConnector = connector;
         spcConnector.setAuthParameter(spcClientSecret, accessToken);
 
-        return spcConnector.requestEndpointToJson(spcUrl);
+        return spcConnector.requestEndpointToJson();
     }
 
     /*
@@ -41,9 +42,6 @@ public class SpcJavaClient {
         this.spcUrl = spcUrl;
     }
 
-    public void setCurrentAccessToken(String currentAccessToken) {
-        this.currentAccessToken = currentAccessToken;
-    }
 
     /*
     Getter
@@ -60,7 +58,4 @@ public class SpcJavaClient {
         return spcUrl;
     }
 
-    public String getCurrentAccessToken() {
-        return currentAccessToken;
-    }
 }
