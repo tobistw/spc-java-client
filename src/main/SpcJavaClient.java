@@ -23,13 +23,13 @@ public class SpcJavaClient {
     public String requestMetaData(String accessToken) throws IOException {
         connector = new MockSpcConnectorImpl(spcUrl);
 
-        return connector.requestEndpointDocuments(spcClientSecret, accessToken);
+        return connector.requestEndpointDocument(spcClientSecret, accessToken);
     }
 
     public String requestMetaData(String accessToken, SpcConnector connector) throws IOException {
         this.connector = connector;
 
-        return this.connector.requestEndpointDocuments(spcClientSecret, accessToken);
+        return this.connector.requestEndpointDocument(spcClientSecret, accessToken);
     }
 
     /*

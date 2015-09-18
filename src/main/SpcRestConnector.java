@@ -23,7 +23,7 @@ public class SpcRestConnector implements SpcConnector {
 
     //TODO: return a List of SpcDocuments from SPC response (Json Documents)
     @Override
-    public String requestEndpointDocuments(String apiKey, String accessToken) throws IOException {
+    public String requestEndpointDocument(String apiKey, String accessToken) throws IOException {
         this.uri += "?api_key=" + apiKey + "&access_token=" + accessToken;
         Gson gson = new Gson();
         this.clientResource = new ClientResource(uri);

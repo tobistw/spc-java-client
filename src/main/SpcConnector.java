@@ -8,6 +8,6 @@ import java.io.IOException;
 public interface SpcConnector {
 
     //todo: return type must be List<EntityDocument>
-    public String requestEndpointDocuments(String apiKey, String accessToken) throws IOException;
+    public String requestEndpointDocument(String apiKey, String accessToken) throws IOException;
 
 }

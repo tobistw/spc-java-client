@@ -19,7 +19,7 @@ public class MockSpcConnectorImpl implements SpcConnector {
 
 
     @Override
-    public String requestEndpointDocuments(String apiKey, String accessToken) {
+    public String requestEndpointDocument(String apiKey, String accessToken) {
         this.uri += "?api_key=" + apiKey + "&access_token=" + accessToken;
         Gson gson = new Gson();
 
