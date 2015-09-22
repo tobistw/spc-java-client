@@ -1,3 +1,8 @@
+package de.ascora.spcjavaclient;
+
+import de.ascora.spcjavaclient.metadata.MetaData;
+import de.ascora.spcjavaclient.mock.MockSpcConnectorImpl;
+
 import java.io.IOException;
 
 /**
@@ -20,13 +25,13 @@ public class SpcJavaClient {
     }
 
 
-    public String requestMetaData(String accessToken) throws IOException {
+    public MetaData requestMetaData(String accessToken) throws IOException {
         connector = new MockSpcConnectorImpl(spcUrl);
 
         return connector.requestEndpointDocument(spcClientSecret, accessToken);
     }
 
-    public String requestMetaData(String accessToken, SpcConnector connector) throws IOException {
+    public MetaData requestMetaData(String accessToken, SpcConnector connector) throws IOException {
         this.connector = connector;
 
         return this.connector.requestEndpointDocument(spcClientSecret, accessToken);

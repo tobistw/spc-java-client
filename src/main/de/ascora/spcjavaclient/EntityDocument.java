@@ -1,3 +1,5 @@
+package de.ascora.spcjavaclient;
+
 /**
  * Created by tobi on 16.09.2015.
  */

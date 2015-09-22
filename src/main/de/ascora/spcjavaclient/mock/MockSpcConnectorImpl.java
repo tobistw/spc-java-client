@@ -1,4 +1,8 @@
+package de.ascora.spcjavaclient.mock;
+
 import com.google.gson.Gson;
+import de.ascora.spcjavaclient.SpcConnector;
+import de.ascora.spcjavaclient.metadata.MetaData;
 
 /**
  * Created by tobi on 15.09.2015.
@@ -19,15 +23,17 @@ public class MockSpcConnectorImpl implements SpcConnector {
 
 
     @Override
-    public String requestEndpointDocument(String apiKey, String accessToken) {
+    public MetaData requestEndpointDocument(String apiKey, String accessToken) {
         this.uri += "?api_key=" + apiKey + "&access_token=" + accessToken;
         Gson gson = new Gson();
 
         if (executeRequest(uri)) {
-            return gson.toJson(mockSpcResponse);
+
+            //return gson.toJson(mockSpcResponse);
         }
 
-        return "401";
+        //return "401";
+        return null;
     }
 
 

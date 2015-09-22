@@ -1,6 +1,10 @@
 import static org.junit.Assert.*;
 
 import com.google.gson.Gson;
+import de.ascora.spcjavaclient.SpcJavaClient;
+import de.ascora.spcjavaclient.metadata.MetaData;
+import de.ascora.spcjavaclient.mock.MockMetaData;
+import de.ascora.spcjavaclient.mock.MockSpcResponse;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -21,6 +25,7 @@ public class TestSpcJavaClient {
     For local testing.
      */
     private MockSpcResponse mockSpcResponse;
+    private MockMetaData mockMetaData;
     private Gson gson;
 
 
@@ -29,6 +34,7 @@ public class TestSpcJavaClient {
         spcClient = new SpcJavaClient(CLIENT_NAME, API_KEY, SPC_URL);
 
         mockSpcResponse = new MockSpcResponse();
+        mockMetaData = new MockMetaData();
         gson = new Gson();
     }
 
@@ -48,13 +54,13 @@ public class TestSpcJavaClient {
      */
     @Test
     public void testMockRequestMetaData() throws IOException {
-        String result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
-        assertEquals(result, gson.toJson(mockSpcResponse));
+        MetaData result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
+        assertEquals(result, gson.toJson(mockMetaData));
     }
 
 //    @Test
 //    public void testRestRequestMetaData() throws IOException {
-//        SpcConnector connector = new SpcRestConnector(SPC_URL);
+//        de.ascora.spcjavaclient.SpcConnector connector = new de.ascora.spcjavaclient.SpcRestConnector(SPC_URL);
 //        String result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN, connector);
 //        assertEquals(result, gson.toJson(mockSpcResponse));
 //    }
