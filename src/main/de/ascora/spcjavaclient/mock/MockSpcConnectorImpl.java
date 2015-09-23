@@ -7,6 +7,7 @@ import de.ascora.spcjavaclient.SpcConnector;
 import de.ascora.spcjavaclient.metadata.Entity;
 import de.ascora.spcjavaclient.metadata.MetaData;
 import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
+import de.ascora.spcjavaclient.metadata.crema.Preference;
 import de.ascora.spcjavaclient.metadata.crema.PrivateData;
 import de.ascora.spcjavaclient.metadata.crema.PublicData;
 import de.ascora.spcjavaclient.metadata.crema.generic.Key;
@@ -55,6 +56,7 @@ public class MockSpcConnectorImpl implements SpcConnector {
             PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
             JsonObject jsonObject = jsonArray.get(2).getAsJsonObject();
             JsonArray array = jsonObject.getAsJsonArray("preferences");
+            //Preference[] preferences = gson.fromJson(array, Preference.class);
             Type type = new TypeToken<Map<Key, Value>>(){}.getType();
             Map<Key, Value> map = gson.fromJson(array, type);
 

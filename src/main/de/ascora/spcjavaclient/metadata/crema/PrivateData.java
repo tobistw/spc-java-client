@@ -10,9 +10,9 @@ import java.util.Map;
  */
 public class PrivateData {
 
-    private Map<Key, Value> preferences;
+    private Preference[] preferences;
 
-    public PrivateData(Map<Key, Value> preferences) {
+    public PrivateData(Preference[] preferences) {
         this.preferences = preferences;
     }
 
