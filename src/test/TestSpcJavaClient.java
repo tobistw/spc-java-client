@@ -55,7 +55,8 @@ public class TestSpcJavaClient {
     @Test
     public void testMockRequestMetaData() throws IOException {
         MetaData result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
-        assertEquals(result, gson.toJson(mockMetaData));
+        //System.out.println(mockSpcResponse.toString());
+        assertEquals(result, mockMetaData);
     }
 
 //    @Test

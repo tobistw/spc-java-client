@@ -1,6 +1,7 @@
 package de.ascora.spcjavaclient.mock;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -14,7 +15,7 @@ public class MockSpcResponse {
     private String key1 = "email";
     private String value1 = "testuser@ascora.de";
     private String key2 = "options";
-    private String[] value2 = {"option1", "option2", "option3"};
+    private String[] value2 = {"\"option1\"", "\"option2\"", "\"option3\""};
     private String key3 = "isCustomer";
     private Boolean value3 = true;
     private List preferences;
@@ -31,20 +32,26 @@ public class MockSpcResponse {
 
     @Override
     public String toString() {
-        return "{" +
-                "_id:'" + _id + '\'' +
-                ", name:'" + name + '\'' +
-                ", company:'" + company + '\'' +
-                ", factory:'" + factory + '\'' +
-                '}';
+        return "[" +
+                "{" +
+                "_id: \"" + _id + '\"' +
+                ", name: \"" + name + '\"' +
+                "}, " +
+                "{" +
+                "company: \"" + company + '\"' +
+                ", factory: \"" + factory + '\"' +
+                "}," +
+                "{" +
+                formatPreferences() +
+                "}]";
     }
 
     private String formatPreferences() {
-        String result = "[";
+        String result = "preferences: [";
 
-        result += "{" + preferences.get(0) + ":" + preferences.get(1) + "}, ";
-        result += "{" + preferences.get(2) + ":" + preferences.get(3) + "}, ";
-        result += "{" + preferences.get(4) + ":" + preferences.get(5) + "} ";
+        result += "{ key: " + '\"' + preferences.get(0) + '\"' + ", value: " + '\"' + preferences.get(1) + '\"' + "}, ";
+        //result += "{ key: " + '\"' + preferences.get(2) + '\"' + ", value: " + Arrays.toString((Object[]) preferences.get(3)) + "}, ";
+        result += "{ key: " + '\"' + preferences.get(4) + '\"' + ", value: " + preferences.get(5) + "}";
 
         result += "]";
 
