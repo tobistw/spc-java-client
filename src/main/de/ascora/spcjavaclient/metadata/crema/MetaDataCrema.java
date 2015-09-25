@@ -38,4 +38,25 @@ public class MetaDataCrema extends MetaData {
     public void deletePrivateData(Key key, Value value) {
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
+
+        MetaDataCrema that = (MetaDataCrema) o;
+
+        if (publicData != null ? !publicData.equals(that.publicData) : that.publicData != null) return false;
+        return !(privateData != null ? !privateData.equals(that.privateData) : that.privateData != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = super.hashCode();
+        result = 31 * result + (publicData != null ? publicData.hashCode() : 0);
+        result = 31 * result + (privateData != null ? privateData.hashCode() : 0);
+        return result;
+    }
 }

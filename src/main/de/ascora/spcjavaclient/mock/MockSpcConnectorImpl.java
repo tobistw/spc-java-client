@@ -1,27 +1,18 @@
 package de.ascora.spcjavaclient.mock;
 
 import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import de.ascora.spcjavaclient.SpcConnector;
 import de.ascora.spcjavaclient.metadata.Entity;
 import de.ascora.spcjavaclient.metadata.MetaData;
 import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
-import de.ascora.spcjavaclient.metadata.crema.Preference;
 import de.ascora.spcjavaclient.metadata.crema.PrivateData;
 import de.ascora.spcjavaclient.metadata.crema.PublicData;
 import de.ascora.spcjavaclient.metadata.crema.generic.Key;
 import de.ascora.spcjavaclient.metadata.crema.generic.Value;
-import jdk.nashorn.internal.parser.JSONParser;
 
 import java.io.IOException;
 import java.io.Reader;
-import java.io.StringReader;
-import java.lang.reflect.Type;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by tobi on 15.09.2015.
@@ -47,7 +38,6 @@ public class MockSpcConnectorImpl implements SpcConnector {
         String response;
         Gson gson = new Gson();
 
-        //todo: Parsing json object to PrivateData
         if (executeRequest(uri)) {
             response = mockSpcResponse.toString();
             JsonParser jsonParser = new JsonParser();
@@ -55,15 +45,8 @@ public class MockSpcConnectorImpl implements SpcConnector {
             Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
             PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
             JsonObject jsonObject = jsonArray.get(2).getAsJsonObject();
-            JsonArray array = jsonObject.getAsJsonArray("preferences");
-            //Preference[] preferences = gson.fromJson(array, Preference.class);
-            Type type = new TypeToken<Map<Key, Value>>(){}.getType();
-            Map<Key, Value> map = gson.fromJson(array, type);
+            PrivateData privateData = gson.fromJson(jsonObject, PrivateData.class);
 
-
-            PrivateData privateData = gson.fromJson(array, PrivateData.class);
-            //Reader sr = new StringReader(response);
-            //return readJsonString(sr);
             return new MetaDataCrema(entity, publicData, privateData);
         }
 

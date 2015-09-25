@@ -3,19 +3,19 @@ package de.ascora.spcjavaclient.metadata.crema.generic;
 /**
  * Created by tobi on 22.09.2015.
  */
-public class Value<V> {
+public class Value<T> {
 
-    private V value;
+    private T value;
 
-    public Value(V value) {
+    public Value(T value) {
         this.value = value;
     }
 
-    public void setValue(V value) {
+    public void setValue(T value) {
         this.value = value;
     }
 
-    public V getValue() {
+    public T getValue() {
         return value;
     }
 }

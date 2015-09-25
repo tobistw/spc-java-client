@@ -9,6 +9,8 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 
 /**
  * Created by tobi on 15.09.2015.
@@ -16,6 +18,8 @@ import java.io.IOException;
 public class TestSpcJavaClient {
 
     private SpcJavaClient spcClient;
+    private static final String SOCKET = "127.0.0.1";
+    private static final int PORT = 9000;
     private static final String CLIENT_NAME = "JavaTestClient";
     private static final String API_KEY = "59559afbdae9e1075e68fa263057653b";
     private static final String SPC_URL = "http://127.0.0.1:9000/info/api/001";
@@ -25,7 +29,7 @@ public class TestSpcJavaClient {
     For local testing.
      */
     private MockSpcResponse mockSpcResponse;
-    private MockMetaData mockMetaData;
+    private MetaData mockMetaData;
     private Gson gson;
 
 
@@ -34,7 +38,7 @@ public class TestSpcJavaClient {
         spcClient = new SpcJavaClient(CLIENT_NAME, API_KEY, SPC_URL);
 
         mockSpcResponse = new MockSpcResponse();
-        mockMetaData = new MockMetaData();
+        mockMetaData = new MockMetaData().getMetaDataCremaInstace();
         gson = new Gson();
     }
 
@@ -50,13 +54,21 @@ public class TestSpcJavaClient {
 
 
     /*
-    Client calls entity information
+    Client calls internal mock entity information
      */
     @Test
     public void testMockRequestMetaData() throws IOException {
         MetaData result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
-        //System.out.println(mockSpcResponse.toString());
         assertEquals(result, mockMetaData);
+    }
+
+    /*
+    Testing the connection to the SPC. Note: run mongodb and grunt serve
+     */
+    @Test
+    public void testSpcConnection() throws IOException {
+        Socket socket = new Socket(SOCKET, PORT);
+        assertTrue(socket.isConnected());
     }
 
 //    @Test

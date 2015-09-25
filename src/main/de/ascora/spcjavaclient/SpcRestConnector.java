@@ -31,13 +31,11 @@ public class SpcRestConnector implements SpcConnector {
         Gson gson = new Gson();
         this.clientResource = new ClientResource(uri);
         Representation representation = clientResource.get();
-        List<EntityDocument> documents = new ArrayList<>();
         JsonReader jsonReader = new JsonReader(new InputStreamReader(representation.getStream(), "UTF-8"));
         jsonReader.beginArray();
         while (jsonReader.hasNext()) {
             jsonReader.beginObject();
-            EntityDocument document = gson.fromJson(jsonReader, EntityDocument.class);
-            documents.add(document);
+
             jsonReader.endObject();
         }
         jsonReader.endArray();

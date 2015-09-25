@@ -14,4 +14,20 @@ public abstract class MetaData {
     public String getAuthenticatedEntityName() {
         return null;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        MetaData metaData = (MetaData) o;
+
+        return !(entity != null ? !entity.equals(metaData.entity) : metaData.entity != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return entity != null ? entity.hashCode() : 0;
+    }
 }

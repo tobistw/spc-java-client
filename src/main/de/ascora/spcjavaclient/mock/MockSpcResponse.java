@@ -49,8 +49,8 @@ public class MockSpcResponse {
     private String formatPreferences() {
         String result = "preferences: [";
 
-        result += "{ key: " + '\"' + preferences.get(0) + '\"' + ", value: " + '\"' + preferences.get(1) + '\"' + "}, ";
-        //result += "{ key: " + '\"' + preferences.get(2) + '\"' + ", value: " + Arrays.toString((Object[]) preferences.get(3)) + "}, ";
+        result += "{key: " + '\"' + preferences.get(0) + '\"' + ", value: " + '\"' + preferences.get(1) + '\"' + "}, ";
+        result += "{ key: " + '\"' + preferences.get(2) + '\"' + ", value: " + Arrays.toString((Object[]) preferences.get(3)) + "}, ";
         result += "{ key: " + '\"' + preferences.get(4) + '\"' + ", value: " + preferences.get(5) + "}";
 
         result += "]";

@@ -1,9 +1,8 @@
 package de.ascora.spcjavaclient.metadata.crema;
 
-import de.ascora.spcjavaclient.metadata.crema.generic.Key;
-import de.ascora.spcjavaclient.metadata.crema.generic.Value;
+import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 
-import java.util.Map;
+import java.util.Arrays;
 
 /**
  * Created by tobi on 22.09.2015.
@@ -16,11 +15,22 @@ public class PrivateData {
         this.preferences = preferences;
     }
 
-    public void addPreferences(Key key, Value value) {
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        PrivateData that = (PrivateData) o;
+
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(preferences, that.preferences);
 
     }
 
-    public Map<Key, Value> getPreferences() {
-        return null;
+    @Override
+    public int hashCode() {
+        return preferences != null ? Arrays.hashCode(preferences) : 0;
     }
 }

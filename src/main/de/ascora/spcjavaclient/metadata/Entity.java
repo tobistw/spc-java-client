@@ -19,4 +19,23 @@ public class Entity {
     public String getName() {
         return name;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Entity entity = (Entity) o;
+
+        if (_id != null ? !_id.equals(entity._id) : entity._id != null) return false;
+        return !(name != null ? !name.equals(entity.name) : entity.name != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        int result = _id != null ? _id.hashCode() : 0;
+        result = 31 * result + (name != null ? name.hashCode() : 0);
+        return result;
+    }
 }

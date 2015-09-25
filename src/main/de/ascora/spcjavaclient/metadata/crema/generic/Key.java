@@ -3,19 +3,19 @@ package de.ascora.spcjavaclient.metadata.crema.generic;
 /**
  * Created by tobi on 22.09.2015.
  */
-public class Key<K> {
+public class Key<T> {
 
-    private K key;
+    private T key;
 
-    public Key(K key) {
+    public Key(T key) {
         this.key = key;
     }
 
-    public void setKey(K key) {
+    public void setKey(T key) {
         this.key = key;
     }
 
-    public K getKey() {
+    public T getKey() {
         return key;
     }
 }
