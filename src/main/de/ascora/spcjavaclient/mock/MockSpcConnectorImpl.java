@@ -10,6 +10,7 @@ import de.ascora.spcjavaclient.metadata.crema.PrivateData;
 import de.ascora.spcjavaclient.metadata.crema.PublicData;
 import de.ascora.spcjavaclient.metadata.crema.generic.Key;
 import de.ascora.spcjavaclient.metadata.crema.generic.Value;
+import de.ascora.spcjavaclient.utils.JsonStringParser;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -40,20 +41,30 @@ public class MockSpcConnectorImpl implements SpcConnector {
 
         if (executeRequest(uri)) {
             response = mockSpcResponse.toString();
-            JsonParser jsonParser = new JsonParser();
-            JsonArray jsonArray = jsonParser.parse(response).getAsJsonArray();
-            Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
-            PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
-            JsonObject jsonObject = jsonArray.get(2).getAsJsonObject();
-            PrivateData privateData = gson.fromJson(jsonObject, PrivateData.class);
+            MetaData metaData = JsonStringParser.getMetaDataObject(response);
 
-            return new MetaDataCrema(entity, publicData, privateData);
+
+            return metaData;
         }
 
         //return "401";
         return null;
     }
 
+    @Override
+    public void updateEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+
+    }
+
+    @Override
+    public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+
+    }
+
+    @Override
+    public void deleteEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+
+    }
 
 
     private boolean executeRequest(String url) {

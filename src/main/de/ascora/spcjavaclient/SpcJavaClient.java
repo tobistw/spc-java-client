@@ -18,24 +18,37 @@ public class SpcJavaClient {
 
     public SpcJavaClient(){}
 
-    public SpcJavaClient(String clientName, String apiKey, String spcUrl) {
+    public SpcJavaClient(String clientName, String apiKey, String spcUrl, SpcConnector connector) {
         this.spcClientId = clientName;
         this.spcClientSecret = apiKey;
         this.spcUrl = spcUrl;
+        this.connector = connector;
     }
 
+    /*
+    If no connector is defined, use the default one.
+     */
+    public SpcJavaClient(String spcClientId, String spcClientSecret, String spcUrl) {
+        this.spcClientId = spcClientId;
+        this.spcClientSecret = spcClientSecret;
+        this.spcUrl = spcUrl;
 
+        this.connector = new MockSpcConnectorImpl(spcUrl);
+    }
+
+    /*
+    Rest Methods
+     */
     public MetaData requestMetaData(String accessToken) throws IOException {
-        connector = new MockSpcConnectorImpl(spcUrl);
 
         return connector.requestEndpointDocument(spcClientSecret, accessToken);
     }
 
-    public MetaData requestMetaData(String accessToken, SpcConnector connector) throws IOException {
-        this.connector = connector;
-
-        return this.connector.requestEndpointDocument(spcClientSecret, accessToken);
+    public void createMetaData(String accessToken, MetaData metaData) throws IOException {
+        connector.createEndpointDocument(spcClientSecret, accessToken, metaData);
     }
+
+
 
     /*
     Setter

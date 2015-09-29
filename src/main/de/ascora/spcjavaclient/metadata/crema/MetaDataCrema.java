@@ -19,12 +19,26 @@ public class MetaDataCrema extends MetaData {
         this.privateData = privateData;
     }
 
+    public MetaDataCrema(Entity cremaEntity, PublicData publicData) {
+        this.entity = cremaEntity;
+        this.publicData = publicData;
+        this.privateData = null;
+    }
+
+    public MetaDataCrema(Entity cremaEntity) {
+        this.entity = cremaEntity;
+        this.publicData = null;
+        this.privateData = null;
+    }
+
     public PublicData getPublicData() {
-        return null;
+
+        return this.publicData;
     }
 
     public PrivateData getPrivateData() {
-        return null;
+
+        return this.privateData;
     }
 
     public void createPrivateData(PrivateData data) {

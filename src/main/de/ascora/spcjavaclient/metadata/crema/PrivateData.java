@@ -3,6 +3,7 @@ package de.ascora.spcjavaclient.metadata.crema;
 import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * Created by tobi on 22.09.2015.
@@ -16,6 +17,11 @@ public class PrivateData {
     }
 
 
+    public void addPreference(Preference preference) {
+        if (preference != null) {
+//            preferences[preferences.length]
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

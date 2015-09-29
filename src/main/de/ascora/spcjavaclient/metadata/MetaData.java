@@ -8,11 +8,11 @@ public abstract class MetaData {
     protected Entity entity;
 
     public String getAuthenticatedEntityId() {
-        return null;
+        return entity.get_id();
     }
 
     public String getAuthenticatedEntityName() {
-        return null;
+        return entity.getName();
     }
 
     @Override

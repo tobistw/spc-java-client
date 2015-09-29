@@ -9,7 +9,12 @@ import java.io.IOException;
  */
 public interface SpcConnector {
 
-    //todo: return type must be List<de.ascora.spcjavaclient.EntityDocument>
     public MetaData requestEndpointDocument(String apiKey, String accessToken) throws IOException;
+
+    public void updateEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
+
+    public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
+
+    public void deleteEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
 
 }
