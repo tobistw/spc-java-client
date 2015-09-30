@@ -1,13 +1,14 @@
 package de.ascora.spcjavaclient;
 
-import com.google.gson.Gson;
 import de.ascora.spcjavaclient.metadata.MetaData;
 import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
 import de.ascora.spcjavaclient.metadata.crema.PrivateData;
 import de.ascora.spcjavaclient.utils.JsonStringParser;
+import org.restlet.ext.json.JsonRepresentation;
+import org.restlet.resource.ClientResource;
 
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.Scanner;
@@ -57,12 +58,32 @@ public class SpcCremaConnector implements SpcConnector {
 
     @Override
     public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
-        String authUri = this.uri + "private?api_key=" + apiKey + "&access_token=" + accessToken;
+        String authUri = this.uri + "/private?api_key=" + apiKey + "&access_token=" + accessToken;
+        ClientResource client = new ClientResource(authUri);
         //only private data can be created
         PrivateData privateData = ((MetaDataCrema) data).getPrivateData();
-        Gson gson = new Gson();
-        String json = gson.toJson(privateData);
-        //todo: connect to SPC an send a POST request with json data.
+        String json = JsonStringParser.getMetaDataJsonString(privateData);
+        JsonRepresentation jsonRepresentation = new JsonRepresentation(json);
+        client.post(jsonRepresentation);
+
+//        URL url = new URL(authUri);
+//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+//        connection.setRequestMethod("POST");
+//        connection.setDoInput(true);
+//        connection.setDoOutput(true);
+//        connection.setUseCaches(false);
+//        connection.setRequestProperty("Content-Type", "application/json");
+//        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
+//        writer.write(json);
+//        writer.flush();
+//
+//        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+//
+//        for (String line; (line = reader.readLine()) != null;) {
+//            System.out.println(line);
+//        }
+//        writer.close();
+//        reader.close();
     }
 
     @Override

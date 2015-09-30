@@ -20,7 +20,7 @@ public class JsonStringParser {
         if (jsonArray.size() == 3) {
             Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
             PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
-            PrivateData privateData = gson.fromJson(jsonArray.get(2).getAsJsonObject(), PrivateData.class);
+            PrivateData privateData = gson.fromJson(jsonArray.get(2), PrivateData.class);
 
             return new MetaDataCrema(entity, publicData, privateData);
         } else if (jsonArray.size() == 2) {
@@ -35,5 +35,12 @@ public class JsonStringParser {
         }
 
         return null;
+    }
+
+    public static String getMetaDataJsonString(Object metaData) {
+        Gson gson = new Gson();
+        String jsonMetaData = gson.toJson(metaData);
+
+        return jsonMetaData;
     }
 }

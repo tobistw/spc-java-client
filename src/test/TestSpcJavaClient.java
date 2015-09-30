@@ -124,13 +124,13 @@ public class TestSpcJavaClient {
     /*
     Create Private Data for Testuser
      */
-    @Test
-    public void testCreatePrivateData() throws IOException {
-        PrivateData privateData = new PrivateData(TEST_PREFERENCES);
-        assertEquals(privateData, mockMetaData.getPrivateData());
-        MetaData metaData = new MetaDataCrema(null, null, privateData);
-        spcClient.createMetaData(MOCK_ACCESS_TOKEN, metaData);
-    }
+//    @Test
+//    public void testCreatePrivateData() throws IOException {
+//        PrivateData privateData = new PrivateData(TEST_PREFERENCES);
+//        assertEquals(privateData, mockMetaData.getPrivateData());
+//        MetaData metaData = new MetaDataCrema(null, null, privateData);
+//        spcClient.createMetaData(MOCK_ACCESS_TOKEN, metaData);
+//    }
 
 //    @Test
 //    public void testRestRequestMetaData() throws IOException {
