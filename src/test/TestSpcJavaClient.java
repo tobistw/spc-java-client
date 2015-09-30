@@ -11,7 +11,9 @@ import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 import de.ascora.spcjavaclient.mock.MockMetaData;
 import de.ascora.spcjavaclient.mock.MockSpcResponse;
 import org.junit.Before;
+import org.junit.FixMethodOrder;
 import org.junit.Test;
+import org.junit.runners.MethodSorters;
 
 import java.io.IOException;
 import java.net.Socket;
@@ -21,6 +23,7 @@ import java.util.List;
 /**
  * Created by tobi on 15.09.2015.
  */
+@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public class TestSpcJavaClient {
 
     private SpcJavaClient spcClient;
@@ -68,7 +71,7 @@ public class TestSpcJavaClient {
     Basic test
      */
     @Test
-    public void testSpcJavaClientPreferences() {
+    public void test1_SpcJavaClientPreferences() {
         assertEquals(spcClient.getSpcClientId(), CLIENT_NAME);
         assertEquals(spcClient.getSpcClientSecret(), API_KEY);
         assertEquals(spcClient.getSpcUrl(), SPC_URL);
@@ -79,7 +82,7 @@ public class TestSpcJavaClient {
     Client calls internal mock entity information
      */
     @Test
-    public void testMockRequestMetaData() throws IOException {
+    public void test2_MockRequestMetaData() throws IOException {
         SpcJavaClient spcClientMock = new SpcJavaClient(CLIENT_NAME, API_KEY, SPC_URL);
         MetaData result = spcClientMock.requestMetaData(MOCK_ACCESS_TOKEN);
         assertEquals(result, mockMetaData);
@@ -89,7 +92,7 @@ public class TestSpcJavaClient {
     Testing the connection to the SPC. Note: run mongodb and grunt serve
      */
     @Test
-    public void testSpcConnection() throws IOException {
+    public void test3_SpcConnection() throws IOException {
         Socket socket = new Socket(SOCKET, PORT);
         assertTrue(socket.isConnected());
     }
@@ -98,7 +101,7 @@ public class TestSpcJavaClient {
     Testing the SPC response object.
      */
     @Test
-    public void testSpcResonseObject() throws IOException {
+    public void test4_SpcResonseObject() throws IOException {
         MetaData metaData = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
         assertNotNull(metaData);
     }
@@ -108,35 +111,46 @@ public class TestSpcJavaClient {
     Testing the MetaData Object
      */
     @Test
-    public void testSpcMetaData() throws IOException {
+    public void test5_SpcMetaData() throws IOException {
         MetaData metaData = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
         assertEquals(metaData.getAuthenticatedEntityId(), TEST_ID);
         assertEquals(metaData.getAuthenticatedEntityName(), TEST_USER);
     }
 
-    @Test
-    public void testSpcMetaDataCrema() throws IOException {
-        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
-        assertEquals(metaData.getPublicData(), mockMetaData.getPublicData());
-        assertEquals(metaData.getPrivateData(), mockMetaData.getPrivateData());
-    }
-
     /*
     Create Private Data for Testuser
      */
-//    @Test
-//    public void testCreatePrivateData() throws IOException {
-//        PrivateData privateData = new PrivateData(TEST_PREFERENCES);
-//        assertEquals(privateData, mockMetaData.getPrivateData());
-//        MetaData metaData = new MetaDataCrema(null, null, privateData);
-//        spcClient.createMetaData(MOCK_ACCESS_TOKEN, metaData);
-//    }
+
+    @Test
+    public void test6_CreatePrivateData() throws IOException {
+        PrivateData privateData = new PrivateData(TEST_PREFERENCES);
+        assertEquals(privateData, mockMetaData.getPrivateData());
+        MetaData metaData = new MetaDataCrema(null, null, privateData);
+        spcClient.createMetaData(MOCK_ACCESS_TOKEN, metaData);
+    }
+
+    @Test
+    public void test7_UpdatePrivateData() throws IOException {
+        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
+
+        assertTrue(metaData.updatePrivateData(new Preference<>("color", "red")));
+        assertTrue(metaData.updatePrivateData(new Preference<>("email", "testuser@ascora.de")));
+
+        spcClient.updateMetaData(MOCK_ACCESS_TOKEN, metaData);
+    }
+
+    @Test
+    public void test8_DeletePrivateData() throws IOException {
+        spcClient.deleteMetaData(MOCK_ACCESS_TOKEN);
+    }
 
 //    @Test
-//    public void testRestRequestMetaData() throws IOException {
-//        de.ascora.spcjavaclient.SpcConnector connector = new de.ascora.spcjavaclient.SpcRestConnector(SPC_URL);
-//        String result = spcClient.requestMetaData(MOCK_ACCESS_TOKEN, connector);
-//        assertEquals(result, gson.toJson(mockSpcResponse));
+//    public void testSpcMetaDataCrema() throws IOException {
+//        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
+//        assertEquals(metaData.getEntity(), mockMetaData.getEntity());
+//        assertEquals(metaData.getPublicData(), mockMetaData.getPublicData());
+//        assertEquals(metaData.getPrivateData(), mockMetaData.getPrivateData());
 //    }
+
 
 }

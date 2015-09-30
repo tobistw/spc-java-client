@@ -15,6 +15,11 @@ public abstract class MetaData {
         return entity.getName();
     }
 
+
+    public Entity getEntity() {
+        return entity;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

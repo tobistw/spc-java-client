@@ -62,7 +62,7 @@ public class MockSpcConnectorImpl implements SpcConnector {
     }
 
     @Override
-    public void deleteEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+    public void deleteEndpointDocument(String apiKey, String accessToken) throws IOException {
 
     }
 

@@ -48,8 +48,13 @@ public class SpcJavaClient {
         connector.createEndpointDocument(spcClientSecret, accessToken, metaData);
     }
 
+    public void updateMetaData(String accessToken, MetaData metaData) throws IOException {
+        connector.updateEndpointDocument(spcClientSecret, accessToken, metaData);
+    }
 
-
+    public void deleteMetaData(String accessToken) throws IOException {
+        connector.deleteEndpointDocument(spcClientSecret, accessToken);
+    }
     /*
     Setter
      */

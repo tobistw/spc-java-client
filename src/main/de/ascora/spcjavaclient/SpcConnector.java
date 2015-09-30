@@ -15,6 +15,6 @@ public interface SpcConnector {
 
     public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
 
-    public void deleteEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
+    public void deleteEndpointDocument(String apiKey, String accessToken) throws IOException;
 
 }

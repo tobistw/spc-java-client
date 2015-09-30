@@ -3,6 +3,7 @@ package de.ascora.spcjavaclient;
 import de.ascora.spcjavaclient.metadata.MetaData;
 import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
 import de.ascora.spcjavaclient.metadata.crema.PrivateData;
+import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 import de.ascora.spcjavaclient.utils.JsonStringParser;
 import org.restlet.ext.json.JsonRepresentation;
 import org.restlet.resource.ClientResource;
@@ -51,17 +52,29 @@ public class SpcCremaConnector implements SpcConnector {
         return metaData;
     }
 
+    /*
+    The following methods only handling Private Data
+     */
     @Override
     public void updateEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+        if (data != null) {
 
+            String authUri = this.uri + "/private?api_key=" + apiKey + "&access_token=" + accessToken;
+            ClientResource client = new ClientResource(authUri);
+            Preference[] preferences = ((MetaDataCrema) data).getPrivateData().getPreferences();
+
+            String json = JsonStringParser.getMetaDataJsonString(preferences);
+            JsonRepresentation jsonRepresentation = new JsonRepresentation(json);
+            client.put(jsonRepresentation);
+        }
     }
 
     @Override
     public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
         String authUri = this.uri + "/private?api_key=" + apiKey + "&access_token=" + accessToken;
         ClientResource client = new ClientResource(authUri);
-        //only private data can be created
         PrivateData privateData = ((MetaDataCrema) data).getPrivateData();
+
         String json = JsonStringParser.getMetaDataJsonString(privateData);
         JsonRepresentation jsonRepresentation = new JsonRepresentation(json);
         client.post(jsonRepresentation);
@@ -87,7 +100,10 @@ public class SpcCremaConnector implements SpcConnector {
     }
 
     @Override
-    public void deleteEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+    public void deleteEndpointDocument(String apiKey, String accessToken) throws IOException {
+        String authUri = this.uri + "/private?api_key=" + apiKey + "&access_token=" + accessToken;
+        ClientResource client = new ClientResource(authUri);
 
+        client.delete();
     }
 }

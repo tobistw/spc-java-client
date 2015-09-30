@@ -17,10 +17,30 @@ public class PrivateData {
     }
 
 
-    public void addPreference(Preference preference) {
-        if (preference != null) {
-//            preferences[preferences.length]
+    public boolean addPreference(Preference preference) {
+        if (this.preferences != null) {
+
+            for (int i = 0; i < preferences.length; i++) {
+                if (preferences[i].getKey().equals(preference.getKey())) {
+                    this.preferences[i].setValue(preference.getValue());
+                    return true;
+                }
+            }
+//            List list = Arrays.asList(this.preferences);
+//            list.add(preference);
+//            Preference[] updatePrefs = new Preference[this.preferences.length + 1];
+//            updatePrefs = this.preferences;
+//            updatePrefs[updatePrefs.length - 1] = preference;
+            this.preferences = Arrays.copyOf(preferences, preferences.length+1);
+            this.preferences[preferences.length - 1] = preference;
+            return true;
+        } else {
+            return false;
         }
+    }
+
+    public Preference[] getPreferences() {
+        return preferences;
     }
 
     @Override

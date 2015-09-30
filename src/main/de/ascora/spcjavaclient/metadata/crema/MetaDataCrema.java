@@ -3,6 +3,7 @@ package de.ascora.spcjavaclient.metadata.crema;
 import de.ascora.spcjavaclient.metadata.Entity;
 import de.ascora.spcjavaclient.metadata.MetaData;
 import de.ascora.spcjavaclient.metadata.crema.generic.Key;
+import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 import de.ascora.spcjavaclient.metadata.crema.generic.Value;
 
 /**
@@ -45,8 +46,12 @@ public class MetaDataCrema extends MetaData {
 
     }
 
-    public void updatePrivateData(Key key, Value value) {
-
+    public boolean updatePrivateData(Preference preference) {
+        if (privateData == null) {
+            return false;
+        } else {
+            return this.privateData.addPreference(preference);
+        }
     }
 
     public void deletePrivateData(Key key, Value value) {
