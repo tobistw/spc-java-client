@@ -42,20 +42,12 @@ public class MetaDataCrema extends MetaData {
         return this.privateData;
     }
 
-    public void createPrivateData(PrivateData data) {
-
-    }
-
     public boolean updatePrivateData(Preference preference) {
         if (privateData == null) {
             return false;
         } else {
             return this.privateData.addPreference(preference);
         }
-    }
-
-    public void deletePrivateData(Key key, Value value) {
-
     }
 
     @Override

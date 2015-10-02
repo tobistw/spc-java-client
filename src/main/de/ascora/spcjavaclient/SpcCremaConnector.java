@@ -78,25 +78,6 @@ public class SpcCremaConnector implements SpcConnector {
         String json = JsonStringParser.getMetaDataJsonString(privateData);
         JsonRepresentation jsonRepresentation = new JsonRepresentation(json);
         client.post(jsonRepresentation);
-
-//        URL url = new URL(authUri);
-//        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-//        connection.setRequestMethod("POST");
-//        connection.setDoInput(true);
-//        connection.setDoOutput(true);
-//        connection.setUseCaches(false);
-//        connection.setRequestProperty("Content-Type", "application/json");
-//        OutputStreamWriter writer = new OutputStreamWriter(connection.getOutputStream());
-//        writer.write(json);
-//        writer.flush();
-//
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-//
-//        for (String line; (line = reader.readLine()) != null;) {
-//            System.out.println(line);
-//        }
-//        writer.close();
-//        reader.close();
     }
 
     @Override

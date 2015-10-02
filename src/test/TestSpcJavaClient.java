@@ -19,6 +19,7 @@ import java.io.IOException;
 import java.net.Socket;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tobi on 15.09.2015.
@@ -44,6 +45,10 @@ public class TestSpcJavaClient {
     private final List PREF_VAL2 = Arrays.asList(optionsValues);
     private final String PREF_KEY3 = "isCustomer";
     private final boolean PREF_VAL3 = true;
+    private final String UPDATE_KEY1 = "color";
+    private final String UPDATE_VAL1 = "red";
+    private final String UPDATE_KEY2 = "email";
+    private final String UPDATE_VAL2 = "testuser@ascora.de";
 
     /*
     For local testing.
@@ -68,7 +73,7 @@ public class TestSpcJavaClient {
     }
 
     /*
-    Basic test
+    Basic test for SpcJavaClient
      */
     @Test
     public void test1_SpcJavaClientPreferences() {
@@ -88,6 +93,7 @@ public class TestSpcJavaClient {
         assertEquals(result, mockMetaData);
     }
 
+
     /*
     Testing the connection to the SPC. Note: run mongodb and grunt serve
      */
@@ -98,29 +104,30 @@ public class TestSpcJavaClient {
     }
 
     /*
-    Testing the SPC response object.
+    Testing the MetaData Object.
      */
     @Test
-    public void test4_SpcResonseObject() throws IOException {
+    public void test4_SpcMetaData() throws IOException {
         MetaData metaData = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
         assertNotNull(metaData);
-    }
-
-
-    /*
-    Testing the MetaData Object
-     */
-    @Test
-    public void test5_SpcMetaData() throws IOException {
-        MetaData metaData = spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
         assertEquals(metaData.getAuthenticatedEntityId(), TEST_ID);
         assertEquals(metaData.getAuthenticatedEntityName(), TEST_USER);
     }
 
-    /*
-    Create Private Data for Testuser
-     */
 
+    /*
+    Testing CREMA specific basic information.
+     */
+    @Test
+    public void test5_SpcMetaDataCrema() throws IOException {
+        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
+        assertEquals(metaData.getEntity(), mockMetaData.getEntity());
+        assertEquals(metaData.getPublicData(), mockMetaData.getPublicData());
+    }
+
+    /*
+    Create, update, delete Private Data for Testuser
+     */
     @Test
     public void test6_CreatePrivateData() throws IOException {
         PrivateData privateData = new PrivateData(TEST_PREFERENCES);
@@ -133,24 +140,23 @@ public class TestSpcJavaClient {
     public void test7_UpdatePrivateData() throws IOException {
         MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
 
-        assertTrue(metaData.updatePrivateData(new Preference<>("color", "red")));
-        assertTrue(metaData.updatePrivateData(new Preference<>("email", "testuser@ascora.de")));
+        assertTrue(metaData.updatePrivateData(new Preference<>(UPDATE_KEY1, UPDATE_VAL1)));
+        assertTrue(metaData.updatePrivateData(new Preference<>(UPDATE_KEY2, UPDATE_VAL2)));
 
         spcClient.updateMetaData(MOCK_ACCESS_TOKEN, metaData);
     }
 
     @Test
-    public void test8_DeletePrivateData() throws IOException {
-        spcClient.deleteMetaData(MOCK_ACCESS_TOKEN);
+    public void test8_PrivateDataPermissionCheck() throws IOException {
+        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
+        Map permissionMap = metaData.getPrivateData().getPreferenceAsMap();
+        assertTrue(permissionMap.get(UPDATE_KEY1).equals(UPDATE_VAL1));
+        assertTrue(permissionMap.get(UPDATE_KEY2).equals(UPDATE_VAL2));
     }
 
-//    @Test
-//    public void testSpcMetaDataCrema() throws IOException {
-//        MetaDataCrema metaData = (MetaDataCrema) spcClient.requestMetaData(MOCK_ACCESS_TOKEN);
-//        assertEquals(metaData.getEntity(), mockMetaData.getEntity());
-//        assertEquals(metaData.getPublicData(), mockMetaData.getPublicData());
-//        assertEquals(metaData.getPrivateData(), mockMetaData.getPrivateData());
-//    }
-
+    @Test
+    public void test9_DeletePrivateData() throws IOException {
+        spcClient.deleteMetaData(MOCK_ACCESS_TOKEN);
+    }
 
 }

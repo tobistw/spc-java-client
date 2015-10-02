@@ -3,7 +3,9 @@ package de.ascora.spcjavaclient.metadata.crema;
 import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by tobi on 22.09.2015.
@@ -26,11 +28,6 @@ public class PrivateData {
                     return true;
                 }
             }
-//            List list = Arrays.asList(this.preferences);
-//            list.add(preference);
-//            Preference[] updatePrefs = new Preference[this.preferences.length + 1];
-//            updatePrefs = this.preferences;
-//            updatePrefs[updatePrefs.length - 1] = preference;
             this.preferences = Arrays.copyOf(preferences, preferences.length+1);
             this.preferences[preferences.length - 1] = preference;
             return true;
@@ -41,6 +38,17 @@ public class PrivateData {
 
     public Preference[] getPreferences() {
         return preferences;
+    }
+
+    public Map getPreferenceAsMap() {
+        Map map = new HashMap<>();
+
+        if (preferences != null) {
+            for (Preference prefs : preferences) {
+                map.put(prefs.getKey(), prefs.getValue());
+            }
+        }
+        return map;
     }
 
     @Override
