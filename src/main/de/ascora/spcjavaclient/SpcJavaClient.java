@@ -1,6 +1,8 @@
 package de.ascora.spcjavaclient;
 
 import de.ascora.spcjavaclient.metadata.MetaData;
+import de.ascora.spcjavaclient.metadata.MetaDataProject;
+import de.ascora.spcjavaclient.metadata.SpcToken;
 import de.ascora.spcjavaclient.mock.MockSpcConnectorImpl;
 
 import java.io.IOException;
@@ -13,47 +15,80 @@ public class SpcJavaClient {
     private String spcClientId;
     private String spcClientSecret;
     private String spcUrl;
+    private String projectId;
 
     private SpcConnector connector;
 
     public SpcJavaClient(){}
 
-    public SpcJavaClient(String clientName, String apiKey, String spcUrl, SpcConnector connector) {
+    public SpcJavaClient(String clientName, String apiKey, String spcUrl, String projectId, SpcConnector connector) {
         this.spcClientId = clientName;
         this.spcClientSecret = apiKey;
         this.spcUrl = spcUrl;
+        this.projectId = projectId;
         this.connector = connector;
     }
 
     /*
     If no connector is defined, use the default one.
      */
-    public SpcJavaClient(String spcClientId, String spcClientSecret, String spcUrl) {
+    public SpcJavaClient(String spcClientId, String spcClientSecret, String spcUrl, String projectId) {
         this.spcClientId = spcClientId;
         this.spcClientSecret = spcClientSecret;
         this.spcUrl = spcUrl;
+        this.projectId = projectId;
 
         this.connector = new MockSpcConnectorImpl(spcUrl);
     }
 
     /*
+    Client Authentication
+     */
+    public SpcToken getTokensForId(String id) throws IOException {
+        return connector.requestTokensForId(spcClientSecret, id);
+    }
+    /*
     Rest Methods
      */
     public MetaData requestMetaData(String accessToken) throws IOException {
 
-        return connector.requestEndpointDocument(spcClientSecret, accessToken);
+        return connector.requestMetaData(spcClientSecret, accessToken);
     }
 
     public void createMetaData(String accessToken, MetaData metaData) throws IOException {
-        connector.createEndpointDocument(spcClientSecret, accessToken, metaData);
+        if (metaData instanceof MetaDataProject) {
+            MetaDataProject metaDataProject = (MetaDataProject) metaData;
+
+            if (metaDataProject.getPublicPayload() != null) {
+                connector.createPublicPayload(spcClientSecret, accessToken, metaDataProject);
+            }
+
+            if (metaDataProject.getPrivatePayload() != null) {
+                connector.createPrivatePayload(spcClientSecret, accessToken, metaDataProject);
+            }
+        }
     }
 
     public void updateMetaData(String accessToken, MetaData metaData) throws IOException {
-        connector.updateEndpointDocument(spcClientSecret, accessToken, metaData);
+        if (metaData instanceof MetaDataProject) {
+            MetaDataProject metaDataProject = (MetaDataProject) metaData;
+
+            if (metaDataProject.getPublicPayload() != null) {
+                connector.updatePublicPayload(spcClientSecret, accessToken, metaData);
+            }
+
+            if (metaDataProject.getPrivatePayload() != null) {
+                connector.updatePrivatePayload(spcClientSecret, accessToken, metaDataProject);
+            }
+        }
     }
 
-    public void deleteMetaData(String accessToken) throws IOException {
-        connector.deleteEndpointDocument(spcClientSecret, accessToken);
+    public void deletePublicMetaData(String accessToken) throws IOException {
+        connector.deletePublicPayload(spcClientSecret, accessToken);
+    }
+
+    public void deletePrivateMetaData(String accessToken) throws IOException {
+        connector.deletePrivatePayload(spcClientSecret, accessToken);
     }
     /*
     Setter

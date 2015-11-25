@@ -1,4 +1,4 @@
-package de.ascora.spcjavaclient.metadata.crema.generic;
+package de.ascora.spcjavaclient.metadata.generic;
 
 /**
  * Created by tobi on 23.09.2015.
@@ -45,5 +45,13 @@ public class Preference<K, V> {
         int result = key != null ? key.hashCode() : 0;
         result = 31 * result + (value != null ? value.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Preference{" +
+                "key=" + key +
+                ", value=" + value +
+                '}';
     }
 }

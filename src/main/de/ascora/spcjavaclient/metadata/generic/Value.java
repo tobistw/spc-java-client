@@ -1,4 +1,4 @@
-package de.ascora.spcjavaclient.metadata.crema.generic;
+package de.ascora.spcjavaclient.metadata.generic;
 
 /**
  * Created by tobi on 22.09.2015.
@@ -17,5 +17,12 @@ public class Value<T> {
 
     public T getValue() {
         return value;
+    }
+
+    @Override
+    public String toString() {
+        return "Value{" +
+                "value=" + value +
+                '}';
     }
 }

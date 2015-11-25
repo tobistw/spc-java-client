@@ -1,13 +1,10 @@
 package de.ascora.spcjavaclient.utils;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonParser;
-import de.ascora.spcjavaclient.metadata.Entity;
-import de.ascora.spcjavaclient.metadata.MetaData;
-import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
-import de.ascora.spcjavaclient.metadata.crema.PrivateData;
-import de.ascora.spcjavaclient.metadata.crema.PublicData;
+import com.google.gson.*;
+import de.ascora.spcjavaclient.metadata.*;
+import de.ascora.spcjavaclient.metadata.MetaDataProject;
+import de.ascora.spcjavaclient.metadata.PrivatePayload;
+import de.ascora.spcjavaclient.metadata.PublicPayload;
 
 /**
  * Created by tobi on 29.09.2015.
@@ -16,22 +13,24 @@ public class JsonStringParser {
 
     public static MetaData getMetaDataObject(String response) {
         Gson gson = new Gson();
-        JsonArray jsonArray = new JsonParser().parse(response).getAsJsonArray();
-        if (jsonArray.size() == 3) {
-            Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
-            PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
-            PrivateData privateData = gson.fromJson(jsonArray.get(2), PrivateData.class);
-
-            return new MetaDataCrema(entity, publicData, privateData);
-        } else if (jsonArray.size() == 2) {
-            Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
-            PublicData publicData = gson.fromJson(jsonArray.get(1), PublicData.class);
-
-            return new MetaDataCrema(entity, publicData);
-        } else if (jsonArray.size() == 1) {
-            Entity entity = gson.fromJson(jsonArray.get(0), Entity.class);
-
-            return new MetaDataCrema(entity);
+        Entity entity = null;
+        PublicPayload publicPayload = null;
+        PrivatePayload privatePayload = null;
+        JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
+        if (!jsonObject.isJsonNull()) {
+            if (jsonObject.has("entity") && jsonObject.getAsJsonObject("entity") != null) {
+                JsonObject entityJson = jsonObject.getAsJsonObject("entity");
+                entity = gson.fromJson(entityJson.toString(), Entity.class);
+            }
+            if (jsonObject.has("publicPayload") && !jsonObject.get("publicPayload").isJsonNull()) {
+                JsonObject publicJson = jsonObject.getAsJsonObject("publicPayload");
+                publicPayload = gson.fromJson(publicJson.toString(), PublicPayload.class);
+            }
+            if (jsonObject.has("privatePayload") && !jsonObject.get("privatePayload").isJsonNull()) {
+                JsonArray privateJson = jsonObject.getAsJsonArray("privatePayload");
+                privatePayload = gson.fromJson(privateJson.get(0), PrivatePayload.class);
+            }
+            return new MetaDataProject(entity, publicPayload, privatePayload);
         }
 
         return null;
@@ -42,5 +41,18 @@ public class JsonStringParser {
         String jsonMetaData = gson.toJson(metaData);
 
         return jsonMetaData;
+    }
+
+    public static SpcToken getTokenObject(String response) {
+        JsonObject jsonObject = new JsonParser().parse(response).getAsJsonObject();
+        if (jsonObject != null) {
+            AccessToken accessToken = new AccessToken(jsonObject.getAsJsonPrimitive("access_token").getAsString());
+            RefreshToken refreshToken = new RefreshToken(jsonObject.getAsJsonPrimitive("refresh_token").getAsString());
+
+            SpcToken spcToken = new SpcToken(accessToken, refreshToken);
+
+            return spcToken;
+        }
+        return null;
     }
 }

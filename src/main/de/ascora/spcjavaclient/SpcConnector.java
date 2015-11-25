@@ -1,6 +1,7 @@
 package de.ascora.spcjavaclient;
 
 import de.ascora.spcjavaclient.metadata.MetaData;
+import de.ascora.spcjavaclient.metadata.SpcToken;
 
 import java.io.IOException;
 
@@ -9,12 +10,20 @@ import java.io.IOException;
  */
 public interface SpcConnector {
 
-    public MetaData requestEndpointDocument(String apiKey, String accessToken) throws IOException;
+    public SpcToken requestTokensForId(String apiKey, String id) throws IOException;
 
-    public void updateEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
+    public MetaData requestMetaData(String apiKey, String accessToken) throws IOException;
 
-    public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException;
+    public void updatePublicPayload(String apiKey, String accessToken, MetaData data) throws IOException;
 
-    public void deleteEndpointDocument(String apiKey, String accessToken) throws IOException;
+    public void createPublicPayload(String apiKey, String accessToken, MetaData data) throws IOException;
+
+    public void deletePublicPayload(String apiKey, String accessToken) throws IOException;
+
+    public void updatePrivatePayload(String apiKey, String accessToken, MetaData data) throws IOException;
+
+    public void createPrivatePayload(String apiKey, String accessToken, MetaData data) throws IOException;
+
+    public void deletePrivatePayload(String apiKey, String accessToken) throws IOException;
 
 }

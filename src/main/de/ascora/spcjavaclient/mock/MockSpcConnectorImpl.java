@@ -5,11 +5,12 @@ import com.google.gson.stream.JsonReader;
 import de.ascora.spcjavaclient.SpcConnector;
 import de.ascora.spcjavaclient.metadata.Entity;
 import de.ascora.spcjavaclient.metadata.MetaData;
-import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
-import de.ascora.spcjavaclient.metadata.crema.PrivateData;
-import de.ascora.spcjavaclient.metadata.crema.PublicData;
-import de.ascora.spcjavaclient.metadata.crema.generic.Key;
-import de.ascora.spcjavaclient.metadata.crema.generic.Value;
+import de.ascora.spcjavaclient.metadata.SpcToken;
+import de.ascora.spcjavaclient.metadata.MetaDataProject;
+import de.ascora.spcjavaclient.metadata.PrivatePayload;
+import de.ascora.spcjavaclient.metadata.PublicPayload;
+import de.ascora.spcjavaclient.metadata.generic.Key;
+import de.ascora.spcjavaclient.metadata.generic.Value;
 import de.ascora.spcjavaclient.utils.JsonStringParser;
 
 import java.io.IOException;
@@ -34,7 +35,12 @@ public class MockSpcConnectorImpl implements SpcConnector {
 
 
     @Override
-    public MetaData requestEndpointDocument(String apiKey, String accessToken) throws IOException {
+    public SpcToken requestTokensForId(String apiKey, String id) throws IOException {
+        return null;
+    }
+
+    @Override
+    public MetaData requestMetaData(String apiKey, String accessToken) throws IOException {
         this.uri += "?api_key=" + apiKey + "&access_token=" + accessToken;
         String response;
         Gson gson = new Gson();
@@ -52,17 +58,32 @@ public class MockSpcConnectorImpl implements SpcConnector {
     }
 
     @Override
-    public void updateEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+    public void updatePublicPayload(String apiKey, String accessToken, MetaData data) throws IOException {
 
     }
 
     @Override
-    public void createEndpointDocument(String apiKey, String accessToken, MetaData data) throws IOException {
+    public void createPublicPayload(String apiKey, String accessToken, MetaData data) throws IOException {
 
     }
 
     @Override
-    public void deleteEndpointDocument(String apiKey, String accessToken) throws IOException {
+    public void deletePublicPayload(String apiKey, String accessToken) throws IOException {
+
+    }
+
+    @Override
+    public void updatePrivatePayload(String apiKey, String accessToken, MetaData data) throws IOException {
+
+    }
+
+    @Override
+    public void createPrivatePayload(String apiKey, String accessToken, MetaData data) throws IOException {
+
+    }
+
+    @Override
+    public void deletePrivatePayload(String apiKey, String accessToken) throws IOException {
 
     }
 
@@ -84,9 +105,11 @@ public class MockSpcConnectorImpl implements SpcConnector {
     private MetaData readMetaDocuments(JsonReader reader) throws IOException {
         String id = null;
         String entityName = null;
+        String[] roles = null;
+        String address = null;
         String company = null;
         String factory = null;
-        PrivateData privateData = null;
+        PrivatePayload privatePayload = null;
 
         reader.beginArray();
         reader.beginObject();
@@ -97,12 +120,16 @@ public class MockSpcConnectorImpl implements SpcConnector {
                 id = reader.nextString();
             } else if (name.equals("name")) {
                 entityName = reader.nextString();
+            } else if (name.equals("roles")) {
+                //roles = reader.nextString();
+            } else if (name.equals("address")) {
+                address = reader.nextString();
             } else if (name.equals("company")) {
                 company = reader.nextString();
             } else if (name.equals("factory")) {
                 factory = reader.nextString();
             } else if (name.equals("preferences")) {
-                privateData = readPreferences(reader);
+                privatePayload = readPreferences(reader);
             } else {
                 reader.skipValue();
             }
@@ -111,13 +138,13 @@ public class MockSpcConnectorImpl implements SpcConnector {
         reader.endObject();
         reader.endArray();
 
-        Entity entity = new Entity(id, entityName);
-        PublicData publicData = new PublicData(company, factory);
+        Entity entity = new Entity(id, entityName, roles);
+        PublicPayload publicPayload = new PublicPayload(address, company, factory);
 
-        return new MetaDataCrema(entity, publicData, privateData);
+        return new MetaDataProject(entity, publicPayload, privatePayload);
     }
 
-    private PrivateData readPreferences(JsonReader reader) throws IOException {
+    private PrivatePayload readPreferences(JsonReader reader) throws IOException {
         Key<String> key = null;
 
         reader.beginObject();

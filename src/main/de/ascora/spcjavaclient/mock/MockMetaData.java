@@ -2,10 +2,10 @@ package de.ascora.spcjavaclient.mock;
 
 import de.ascora.spcjavaclient.metadata.Entity;
 import de.ascora.spcjavaclient.metadata.MetaData;
-import de.ascora.spcjavaclient.metadata.crema.MetaDataCrema;
-import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
-import de.ascora.spcjavaclient.metadata.crema.PrivateData;
-import de.ascora.spcjavaclient.metadata.crema.PublicData;
+import de.ascora.spcjavaclient.metadata.MetaDataProject;
+import de.ascora.spcjavaclient.metadata.PrivatePayload;
+import de.ascora.spcjavaclient.metadata.generic.Preference;
+import de.ascora.spcjavaclient.metadata.PublicPayload;
 
 import java.util.*;
 
@@ -14,19 +14,20 @@ import java.util.*;
  */
 public class MockMetaData extends MetaData {
 
-    private PublicData publicData;
-    private PrivateData privateData;
+    private PublicPayload publicPayload;
+    private PrivatePayload privatePayload;
     private Preference[] preferences;
 
 
+    private String[] roles = {"user"};
     private String[] optionsValues = {"option1", "option2", "option3"};
 
     public MockMetaData() {
-        this.entity = new Entity("55cdab6f5a23b1b012de55da", "Testuser");
-        this.publicData = new PublicData("BMW", "München Werk 1");
+        this.entity = new Entity("5655760828e5262c1e483bca", "JavaUser", roles);
+        this.publicPayload = new PublicPayload("Java-Street 1", "Oracle", "USA, California");
         List<Preference> prefList = new ArrayList<>();
         String key1 = "email";
-        String val1 = "testuser@ascora.de";
+        String val1 = "javatest@ascora.de";
         String key2 = "options";
         List val2 = Arrays.asList(optionsValues);
         String key3 = "isCustomer";
@@ -41,10 +42,10 @@ public class MockMetaData extends MetaData {
             preferences[i] = prefList.get(i);
         }
 
-        this.privateData = new PrivateData(preferences);
+        this.privatePayload = new PrivatePayload(preferences);
     }
 
-    public MetaDataCrema getMetaDataCremaInstace() {
-        return new MetaDataCrema(entity, publicData, privateData);
+    public MetaDataProject getMetaDataCremaInstace() {
+        return new MetaDataProject(entity, publicPayload, privatePayload);
     }
 }

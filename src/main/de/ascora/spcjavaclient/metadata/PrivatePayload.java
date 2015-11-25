@@ -1,20 +1,19 @@
-package de.ascora.spcjavaclient.metadata.crema;
+package de.ascora.spcjavaclient.metadata;
 
-import de.ascora.spcjavaclient.metadata.crema.generic.Preference;
+import de.ascora.spcjavaclient.metadata.generic.Preference;
 
 import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
  * Created by tobi on 22.09.2015.
  */
-public class PrivateData {
+public class PrivatePayload {
 
     private Preference[] preferences;
 
-    public PrivateData(Preference[] preferences) {
+    public PrivatePayload(Preference[] preferences) {
         this.preferences = preferences;
     }
 
@@ -56,7 +55,7 @@ public class PrivateData {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        PrivateData that = (PrivateData) o;
+        PrivatePayload that = (PrivatePayload) o;
 
         // Probably incorrect - comparing Object[] arrays with Arrays.equals
         return Arrays.equals(preferences, that.preferences);
@@ -66,5 +65,12 @@ public class PrivateData {
     @Override
     public int hashCode() {
         return preferences != null ? Arrays.hashCode(preferences) : 0;
+    }
+
+    @Override
+    public String toString() {
+        return "PrivatePayload{" +
+                "preferences=" + Arrays.toString(preferences) +
+                '}';
     }
 }
