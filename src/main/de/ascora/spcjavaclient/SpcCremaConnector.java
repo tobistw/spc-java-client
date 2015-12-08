@@ -53,7 +53,7 @@ public class SpcCremaConnector implements SpcConnector {
 
     @Override
     public MetaData requestMetaData(String apiKey, String accessToken) throws IOException {
-        String authUri = this.uri + this.projectId + "/authenticate?apikey=" + apiKey + "&access_token=" + accessToken;
+        String authUri = this.uri + this.projectId + "?apikey=" + apiKey + "&access_token=" + accessToken;
         InputStream inputStream = null;
         MetaData metaData = null;
 

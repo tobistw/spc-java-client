@@ -40,12 +40,14 @@ public class PrivatePayload {
     }
 
     public Map getPreferenceAsMap() {
-        Map map = new HashMap<>();
+        Map map = null;
 
         if (preferences != null) {
+            map = new HashMap<>();
             for (Preference prefs : preferences) {
                 map.put(prefs.getKey(), prefs.getValue());
             }
+            return map;
         }
         return map;
     }

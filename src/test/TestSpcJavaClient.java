@@ -37,7 +37,7 @@ public class TestSpcJavaClient {
     private static String REFRESH_TOKEN = null;
     private static final String TEST_ID = "5655760828e5262c1e483bca";
     private static final String TEST_USER = "JavaUser";
-    private static final String[] TEST_ROLES = {"user"};
+    private static final String[] TEST_ROLES = {"guest", "user"};
     private static final String PUBLIC_ADDRESS = "Java-Street 1";
     private static final String PUBLIC_COMPANY = "Oracle";
     private static final String PUBLIC_FACTORY = "USA, California";
@@ -168,29 +168,32 @@ public class TestSpcJavaClient {
 
     @Test
     public void test7_UpdatePublicPayload() throws IOException {
+        MetaDataProject metaDataProject;
         currentMetaData = (MetaDataProject) spcClient.requestMetaData(ACCESS_TOKEN);
         assertNotNull(currentMetaData);
         assertTrue(currentMetaData.updatePublicPayload(UPDATE_PUBLIC_FIELD, UPDATE_PUBLIC_VALUE));
-
-        spcClient.updateMetaData(ACCESS_TOKEN, currentMetaData);
-        System.out.println("PUBLIC PAYLOAD UPDATED: " + currentMetaData.getPublicPayload());
+        metaDataProject = new MetaDataProject(null, currentMetaData.getPublicPayload(), null);
+        spcClient.updateMetaData(ACCESS_TOKEN, metaDataProject);
+        System.out.println("PUBLIC PAYLOAD UPDATED: " + metaDataProject.getPublicPayload());
     }
 
     @Test
     public void test8_UpdatePrivateData() throws IOException {
+        MetaDataProject metaDataProject;
         currentMetaData = (MetaDataProject) spcClient.requestMetaData(ACCESS_TOKEN);
         assertNotNull(currentMetaData);
         assertTrue(currentMetaData.updatePrivatePayload(new Preference<>(UPDATE_PRIVATE_KEY1, UPDATE_PRIVATE_VAL1)));
         assertTrue(currentMetaData.updatePrivatePayload(new Preference<>(UPDATE_PRIVATE_KEY2, UPDATE_PRIVATE_VAL2)));
-
-        spcClient.updateMetaData(ACCESS_TOKEN, currentMetaData);
-        System.out.println("PRIVATE PAYLOAD UPDATED: " + currentMetaData.getPrivatePayload());
+        metaDataProject = new MetaDataProject(null, null, currentMetaData.getPrivatePayload());
+        spcClient.updateMetaData(ACCESS_TOKEN, metaDataProject);
+        System.out.println("PRIVATE PAYLOAD UPDATED: " + metaDataProject.getPrivatePayload());
     }
 
     @Test
     public void test90_PrivatePayloadPermissionCheck() throws IOException {
         currentMetaData = (MetaDataProject) spcClient.requestMetaData(ACCESS_TOKEN);
         Map permissionMap = currentMetaData.getPrivatePayload().getPreferenceAsMap();
+        assertNotNull(permissionMap);
         System.out.println(permissionMap);
         assertTrue(permissionMap.get(UPDATE_PRIVATE_KEY1).equals(UPDATE_PRIVATE_VAL1));
         assertFalse(permissionMap.get(UPDATE_PRIVATE_KEY2).equals(PREF_VAL1));

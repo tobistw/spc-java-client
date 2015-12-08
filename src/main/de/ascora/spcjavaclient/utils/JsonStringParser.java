@@ -27,8 +27,8 @@ public class JsonStringParser {
                 publicPayload = gson.fromJson(publicJson.toString(), PublicPayload.class);
             }
             if (jsonObject.has("privatePayload") && !jsonObject.get("privatePayload").isJsonNull()) {
-                JsonArray privateJson = jsonObject.getAsJsonArray("privatePayload");
-                privatePayload = gson.fromJson(privateJson.get(0), PrivatePayload.class);
+                JsonObject privateJson = jsonObject.getAsJsonObject("privatePayload");
+                privatePayload = gson.fromJson(privateJson.toString(), PrivatePayload.class);
             }
             return new MetaDataProject(entity, publicPayload, privatePayload);
         }
